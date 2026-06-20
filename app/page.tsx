@@ -476,16 +476,36 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 function AboutApp() {
+  const PHOTOS = ['/arnob.jpg', '/arnob2.jpg', '/arnob3.jpg']
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => setIndex(i => (i + 1) % PHOTOS.length), 4000)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <div style={{ padding: '32px 30px' }}>
       <div style={{ display: 'flex', gap: 18, alignItems: 'center', marginBottom: 26 }}>
         <div style={{
           width: 64, height: 64, borderRadius: '50%',
-          background: 'linear-gradient(150deg, #5b8def, #7c6fff)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.5rem', fontWeight: 700, color: '#fff', flexShrink: 0,
-          letterSpacing: '-0.02em',
-        }}>SN</div>
+          overflow: 'hidden', flexShrink: 0, position: 'relative',
+          border: '2px solid rgba(91,141,239,0.3)',
+        }}>
+          {PHOTOS.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt="Shibli Noman Arnob"
+              style={{
+                position: 'absolute', inset: 0,
+                width: '100%', height: '100%', objectFit: 'cover',
+                opacity: i === index ? 1 : 0,
+                transition: 'opacity 0.8s ease',
+              }}
+            />
+          ))}
+        </div>
         <div>
           <div style={{ fontSize: '1.05rem', color: '#f2f2f5', fontWeight: 600, letterSpacing: '-0.01em' }}>Shibli Noman Arnob</div>
           <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.45)', marginTop: 3 }}>CSE Student, United International University</div>
